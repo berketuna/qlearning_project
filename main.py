@@ -39,7 +39,10 @@ for episode in range(EPISODES):
     discrete_state = get_discrete_state(env.reset())
     done = False
     while not done:
-        action = np.argmax(q_table[discrete_state])
+        if np.random.random() > epsilon:
+            action = np.argmax(q_table[discrete_state])
+        else:
+            action = np.random.randint(0, env.action_space.n)
         new_state, reward, done, _ = env.step(action)
         new_discrete_state = get_discrete_state(new_state)
         if render:
@@ -56,6 +59,6 @@ for episode in range(EPISODES):
     
         discrete_state = new_discrete_state
 
-    if END_EPSILON_DECAYING >= epsiode >= START_EPSILON_DECAYING:
+    if END_EPSILON_DECAYING >= episode >= START_EPSILON_DECAYING:
         epsilon -= epsilon_devay_value
 env.close()
